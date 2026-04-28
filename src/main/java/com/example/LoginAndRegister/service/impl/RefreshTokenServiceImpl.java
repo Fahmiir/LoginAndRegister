@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,14 +21,26 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public String createRefreshToken(User user) {
-        RefreshToken token = new RefreshToken();
-        token.setUser(user);
-        token.setToken(UUID.randomUUID().toString());
-        token.setExpiryDate(Instant.now().plusSeconds(604800)); // 7 days
+        Optional<RefreshToken> existingToken = refreshTokenRepository.findByUser(user);
+        String newToken = UUID.randomUUID().toString();
+        LocalDateTime expiry = LocalDateTime.now().plusSeconds(86400);
 
-        refreshTokenRepository.save(token);
 
-        return token.getToken();
+        if(existingToken.isPresent()) {
+            RefreshToken token = existingToken.get();
+            token.setToken(newToken);
+            token.setExpiryDate(expiry);
+            refreshTokenRepository.save(token);
+        } else {
+            RefreshToken token = new RefreshToken();
+            token.setUser(user);
+            token.setToken(UUID.randomUUID().toString());
+            token.setExpiryDate(LocalDateTime.now().plusSeconds(604800)); // 7 days
+
+            refreshTokenRepository.save(token);
+        }
+
+        return newToken;
     }
 
     @Override
@@ -35,7 +49,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
-        if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
+        if (refreshToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Refresh token expired");
         }
 
