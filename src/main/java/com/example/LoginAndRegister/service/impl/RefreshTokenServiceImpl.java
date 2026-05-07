@@ -1,14 +1,15 @@
 package com.example.LoginAndRegister.service.impl;
 
 
+import com.example.LoginAndRegister.dto.LogoutRequest;
 import com.example.LoginAndRegister.entity.RefreshToken;
 import com.example.LoginAndRegister.entity.User;
 import com.example.LoginAndRegister.repository.RefreshTokenRepository;
+import com.example.LoginAndRegister.repository.UserRepository;
 import com.example.LoginAndRegister.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     public String createRefreshToken(User user) {
@@ -54,5 +57,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
 
         return refreshToken.getUser();
+    }
+
+    @Override
+    public void logout(LogoutRequest request){
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User Not Found"));
+        refreshTokenRepository.deleteByUser(user);
     }
 }
