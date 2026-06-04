@@ -21,5 +21,17 @@ pipeline {
             }
         }
 
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t login-register-app .'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d -p 8080:8080 --name login-register login-register-app'
+            }
+        }
+
     }
 }
