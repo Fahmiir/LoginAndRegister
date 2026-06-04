@@ -1,13 +1,13 @@
 pipeline {
     agent any
 
-    stages {
+    environment {
+        DB_URL = 'jdbc:oracle:thin:@localhost:1521/XEPDB1'
+        DB_USERNAME = 'system'
+        DB_PASSWORD = 'password'
+    }
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+    stages {
 
         stage('Build') {
             steps {
@@ -20,5 +20,6 @@ pipeline {
                 bat 'mvn test'
             }
         }
+
     }
 }
