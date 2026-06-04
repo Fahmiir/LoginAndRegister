@@ -29,7 +29,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d -p 8080:8080 --name login-register login-register-app'
+                bat 'docker run -d -p 8080:8080 --name login-register-2 login-register-app'
             }
         }
 
