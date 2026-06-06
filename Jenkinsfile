@@ -21,16 +21,10 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
+        stage('Deploy') {
             steps {
-                bat 'docker build -t login-register-app .'
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                bat 'docker rm -f login-register-2'
-                bat 'docker run -d -p 8081:8080 -e DB_URL="%DB_URL%" -e DB_USERNAME="%DB_USERNAME%" -e DB_PASSWORD="%DB_PASSWORD%" --name login-register-2 login-register-app'
+                bat 'docker compose down'
+                bat 'docker compose up -d --build'
             }
         }
 
