@@ -23,9 +23,6 @@ services:
     container_name: login-app
     ports:
       - "8080:8080"
-    depends_on:
-      oracle-db:
-        condition: service_healthy
     environment:
       DB_URL: jdbc:oracle:thin:@oracle-db:1521/XEPDB1
       DB_USERNAME: system
