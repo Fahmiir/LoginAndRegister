@@ -1,6 +1,6 @@
-#version: '3.8'
+version: '3.8'
 
-#services:
+services:
 #  oracle-db:
 #    image: gvenzl/oracle-xe:21-slim
 #    container_name: oracle-db
@@ -18,16 +18,16 @@
 #      timeout: 5s
 #      retries: 10
 
-#  app:
-#    build: .
-#    container_name: login-app
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      DB_URL: jdbc:oracle:thin:@oracle-db:1521/XEPDB1
-#      DB_USERNAME: system
-#      DB_PASSWORD: password
-#    restart: always
+  app:
+    build: .
+    container_name: login-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:oracle:thin:@oracle-db:1521/XEPDB1
+      DB_USERNAME: system
+      DB_PASSWORD: password
+    restart: always
 
 volumes:
   oracle-data:

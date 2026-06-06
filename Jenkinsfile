@@ -23,6 +23,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                bat 'docker stop login-app'
+                bat 'docker rm -f login-app'
                 bat 'docker compose up -d --build'
             }
         }
