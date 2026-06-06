@@ -29,6 +29,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
+                bat 'docker rm -f login-register-2'
                 bat 'docker run -d -p 8080:8080 -e DB_URL="%DB_URL%" -e DB_USERNAME="%DB_USERNAME%" -e DB_PASSWORD="%DB_PASSWORD%" --name login-register-2 login-register-app'
             }
         }
