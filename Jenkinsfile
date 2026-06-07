@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DB_URL = 'jdbc:oracle:thin:@host.docker.internal:1522/XEPDB1'
+        DB_URL = 'jdbc:oracle:thin:@localhost:1522/XEPDB1'
         DB_USERNAME = 'system'
         DB_PASSWORD = 'password'
     }
