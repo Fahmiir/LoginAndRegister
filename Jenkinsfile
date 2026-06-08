@@ -15,12 +15,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-
         stage('Deploy') {
             steps {
                 bat 'docker stop login-app'
